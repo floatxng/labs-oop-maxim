@@ -1,10 +1,33 @@
 #include <iostream>
+#include "../include/lib.h"
 
-#include "lib.h"
+int main()
+{
+    try
+    {
+        std::string el1, el2;
+        std::cout << "Enter first five digit number: ";
+        std::cin >> el1;
 
-using namespace std;
+        std::cout << "Enter second five digit number: ";
+        std::cin >> el2;
 
-int main() {
-    cout << "Bruh: " << endl
-         << A() << endl;
+        FiveDigit Numb1(el1);
+        FiveDigit Numb2(el2);
+
+        Numb1 += Numb2;
+
+        std::cout << "Result of addition: ";
+        for (size_t i = 0; i < Numb1.getSize(); ++i)
+        {
+            std::cout << Numb1.getData()[i];
+        }
+        std::cout << std::endl;
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << "Exception: " << ex.what() << std::endl;
+    }
+
+    return 0;
 }
