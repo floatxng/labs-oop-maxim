@@ -48,7 +48,6 @@ void Polygon::input(std::istream& stream) {
     }
 }
 
-// Other class implementations...
 
 Trapezoid::Trapezoid() : Polygon(new Vector2[4]{ {0, 0}, {0, 0}, {0, 0}, {0, 0} }, 4) {}
 
