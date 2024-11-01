@@ -1,142 +1,53 @@
 #include <gtest/gtest.h>
 #include "../include/lib.h"
 
-TEST(HelloTest, DefaultConstructor)
-{
+TEST(PolygonTest, GetCenter) {
+    Vector2 edges[4] = { {0, 0}, {2, 0}, {2, 2}, {0, 2} }; 
+    Polygon polygon(edges, 4); 
 
-    FiveDigit e;
-
-    size_t size = e.getSize();
-    unsigned char *data = e.getData();
-
-    EXPECT_EQ(size, 0);
-    EXPECT_EQ(data, nullptr);
+    Vector2 center = polygon.getCenter();
+    EXPECT_DOUBLE_EQ(center.x, 1.0);
+    EXPECT_DOUBLE_EQ(center.y, 1.0);
 }
 
-TEST(HelloTest, SizeAndDefaultConstructor)
-{
-
-    size_t n = 5;
-    unsigned char t = '1';
-    FiveDigit e(n, t);
-
-    size_t size = e.getSize();
-    unsigned char *data = e.getData();
-
-    EXPECT_EQ(size, n);
-    for (size_t i = 0; i < size; ++i)
-    {
-        EXPECT_EQ(data[i], t);
-    }
+TEST(RhombTest, GetCenter) {
+    Vector2 edges[4] = { {0, 0}, {1, 0}, {1, 1}, {0, 1} }; 
+    Rhomb rhomb(edges[0], edges[1], edges[2], edges[3]);
+    
+    Vector2 center = rhomb.getCenter();
+    EXPECT_DOUBLE_EQ(center.x, 0.5);
+    EXPECT_DOUBLE_EQ(center.y, 0.5);
 }
 
-TEST(HelloTest, InitializerListConstructor)
-{
-
-    std::initializer_list<unsigned char> t = {'1', '4', '3'};
-    FiveDigit e(t);
-
-    size_t size = e.getSize();
-    unsigned char *data = e.getData();
-
-    EXPECT_EQ(size, t.size());
-    size_t i = 0;
-    for (unsigned char digit : t)
-    {
-        EXPECT_EQ(data[i++], digit);
-    }
+TEST(PentagonTest, GetCenter) {
+    Vector2 edges[5] = { {0, 0}, {1, 0}, {1, 1}, {0, 1}, {0.5, 1.5} }; 
+    Pentagon pentagon(edges[0], edges[1], edges[2], edges[3], edges[4]);
+    
+    Vector2 center = pentagon.getCenter();
+    EXPECT_DOUBLE_EQ(center.x, 0.5);
+    EXPECT_DOUBLE_EQ(center.y, 0.7); 
 }
 
-TEST(HelloTest, StringConstructor)
-{
-
-    std::string t = "143";
-    FiveDigit e(t);
-
-    size_t size = e.getSize();
-    unsigned char *data = e.getData();
-
-    EXPECT_EQ(size, t.size());
-    for (size_t i = 0; i < size; ++i)
-    {
-        EXPECT_EQ(data[i], t[i]);
-    }
+TEST(RhombTest, CastToDouble) {
+    Vector2 edges[4] = { {0, 0}, {1, 0}, {1, 1}, {0, 1} }; 
+    Rhomb rhomb(edges[0], edges[1], edges[2], edges[3]);
+    
+    double area = static_cast<double>(rhomb);
+    EXPECT_DOUBLE_EQ(area, 1.0); 
 }
 
-TEST(HelloTest, AssignmentOperator)
-{
-
-    FiveDigit e1("143");
-    FiveDigit e2("143");
-
-    e2 = e1;
-
-    EXPECT_EQ(e2.getSize(), e1.getSize());
-    for (int i = 0; i < e2.getSize(); ++i)
-    {
-        EXPECT_EQ(e1.getData()[i], e2.getData()[i]);
-    }
+TEST(PentagonTest, CastToDouble) {
+    Vector2 edges[5] = { {0, 0}, {1, 0}, {1, 1}, {0, 1}, {0.5, 1.5} }; 
+    Pentagon pentagon(edges[0], edges[1], edges[2], edges[3], edges[4]);
+    
+    double area = static_cast<double>(pentagon);
+    EXPECT_DOUBLE_EQ(area, 0.75); 
 }
 
-TEST(HelloTest, AdditionOperator)
-{
+TEST(TrapezoidTest, CastToDouble) {
+    Vector2 edges[4] = { {0, 0}, {2, 0}, {1.5, 1}, {0.5, 1} }; 
+    Trapezoid trapezoid(edges[0], edges[1], edges[2], edges[3]);
 
-    FiveDigit e1("111");
-    FiveDigit e2("134");
-
-    e1 += e2;
-
-    std::string ans = "300";
-    EXPECT_EQ(e1.getSize(), 3);
-    for (int i = 0; i < e1.getSize(); ++i)
-    {
-        EXPECT_EQ(e1.getData()[i], ans[i]);
-    }
-}
-
-TEST(HelloTest, SubtractionOperator)
-{
-
-    FiveDigit e1("112");
-    FiveDigit e2("12");
-
-    e1 -= e2;
-
-    std::string ans = "100";
-    EXPECT_EQ(e1.getSize(), 3);
-    for (int i = 0; i < e1.getSize(); ++i)
-    {
-        EXPECT_EQ(e1.getData()[i], ans[i]);
-    }
-}
-
-TEST(HelloTest, EqualityOperator)
-{
-
-    FiveDigit e1("112");
-    FiveDigit e2("112");
-    FiveDigit e3("132");
-
-    EXPECT_TRUE(e1 == e2);
-    EXPECT_FALSE(e1 == e3);
-}
-
-TEST(HelloTest, LessThanOperator)
-{
-
-    FiveDigit e1("123");
-    FiveDigit e2("234");
-
-    EXPECT_TRUE(e1 < e2);
-    EXPECT_FALSE(e2 < e1);
-}
-
-TEST(HelloTest, GreaterThanOperator)
-{
-
-    FiveDigit e1("333");
-    FiveDigit e2("222");
-
-    EXPECT_TRUE(e1 > e2);
-    EXPECT_FALSE(e2 > e1);
+    double area = static_cast<double>(trapezoid);
+    EXPECT_DOUBLE_EQ(area, 1.5); 
 }

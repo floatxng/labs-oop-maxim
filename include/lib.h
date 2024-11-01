@@ -2,31 +2,64 @@
 
 #include <initializer_list>
 #include <string>
-class FiveDigit
-{
+#include <iostream>
+#include <cmath> 
+#include <cstring>
+
+struct Vector2 {
+    double x; 
+    double y;
+};
+
+class Figure {
+protected:
+    virtual double getArea() const = 0;
+    virtual void print(std::ostream& stream) const = 0;
+    virtual void input(std::istream& stream) = 0; 
+
 public:
-    FiveDigit();
-    FiveDigit(const size_t &n, unsigned char t);
-    FiveDigit(const std::initializer_list<unsigned char> &t);
-    FiveDigit(const std::string &t);
-    FiveDigit(const FiveDigit &other);
-    FiveDigit(FiveDigit &&other) noexcept;
-    ~FiveDigit() noexcept;
+    virtual Vector2 getCenter() = 0;
 
-    FiveDigit &operator=(const FiveDigit &other);
-    FiveDigit &operator+=(const FiveDigit &other);
-    FiveDigit &operator-=(const FiveDigit &other);
+    explicit operator double() const {
+        return getArea();
+    }
 
-    bool operator==(const FiveDigit &other) const;
-    bool operator<(const FiveDigit &other) const;
-    bool operator>(const FiveDigit &other) const;
+    friend std::ostream& operator<< (std::ostream& stream, const Figure& figure);
+    friend std::istream& operator>> (std::istream& stream, Figure& figure);
+};
 
-    size_t getSize() const;
-    unsigned char *getData() const;
+class Polygon : public Figure {
+protected:
+    Vector2* edges;
+    int edgesCount;
 
-private:
-    size_t _size;
-    unsigned char *_data;
+    void print(std::ostream& stream) const override;
+    double getArea() const override;
+    virtual void input(std::istream& stream) override;
 
-    void isValid(unsigned char digit);
+public:
+    Polygon(Vector2* edges, int edgesCount);
+
+    Vector2 getCenter() override;
+};
+
+class Trapezoid : public Polygon {
+public:
+    Trapezoid();
+    Trapezoid(Vector2 v1, Vector2 v2, Vector2 v3, Vector2 v4);
+    void input(std::istream& stream) override;
+};
+
+class Rhomb : public Polygon {
+public:
+    Rhomb();
+    Rhomb(Vector2 v1, Vector2 v2, Vector2 v3, Vector2 v4);
+    void input(std::istream& stream) override;
+};
+
+class Pentagon : public Polygon {
+public:
+    Pentagon();
+    Pentagon(Vector2 v1, Vector2 v2, Vector2 v3, Vector2 v4, Vector2 v5);
+    void input(std::istream& stream) override;
 };
